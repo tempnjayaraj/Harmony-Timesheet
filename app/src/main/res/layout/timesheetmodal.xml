@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Timesheet: TS684984604650"
+        android:textSize="18sp"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status: Pending Approval"
+        android:textSize="18sp"
+        android:padding="10dp"/>
+    <TextView
+        android:id="@+id/textViewEmp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Employee: Johnson J"
+        android:textSize="18sp"
+        android:padding="10dp"/>
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date: 2023-08-10"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewProject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Parent Project: PROJ-0032"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewWorkFromHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Work from Home: Yes"
+        android:padding="10dp"/>
+
+    <!-- Loop through time logs and display each entry -->
+
+    <TextView
+        android:id="@+id/textViewHalfDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Half Day: No"
+        android:padding="10dp"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="178dp" />
+
+</LinearLayout>

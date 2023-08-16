@@ -3,10 +3,20 @@ package com.archimedis.harmony;
 import java.io.Serializable;
 
 public class TImeLog implements Serializable {
+    String tsname;
     Boolean isChecked;
     String activity;
     String comment;
     String time;
+    Boolean filled;
+
+    public String getTsname() {
+        return tsname;
+    }
+
+    public void setTsname(String tsname) {
+        this.tsname = tsname;
+    }
 
     public TImeLog(Boolean isChecked, String activity, String comment, String time) {
         this.isChecked = isChecked;

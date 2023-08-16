@@ -2,14 +2,11 @@ package com.archimedis.harmony;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.sax.Element;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +17,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -71,7 +67,7 @@ ArrayList<TImeLog> finalLogs = new ArrayList<>();
                 if (response.isSuccessful()) {
                     JSONParser parser = new JSONParser();
                     try {
-                        TextView username = findViewById(R.id.textView);
+                        TextView username = findViewById(R.id.header);
                         ListView listView = findViewById(R.id.listView);
                         List<String> activities = new ArrayList<>();
                         JSONObject result = (JSONObject) parser.parse(response.body().string());
@@ -98,19 +94,31 @@ ArrayList<TImeLog> finalLogs = new ArrayList<>();
                                 System.out.println(finalLogs);
                                 reviewButton.setOnClickListener(new View.OnClickListener() {
                                     public void onClick(View v) {
-                                        Intent reviewFinal = new Intent(ActivityActivity.this,FinalActivity.class);
+                                        Boolean proceed = true;
                                         for(int k=0;k<timeLogs.size();k++){
                                             TImeLog temp = timeLogs.get(k);
-                                            if (temp.isChecked && !finalLogs.contains(temp)) {
-                                                finalLogs.add(temp);
+                                            if (temp.isChecked && temp.getComment().isEmpty() ||temp.isChecked && temp.getTime().isEmpty() ) {
+                                                proceed =false;
                                             }
                                         }
-                                        reviewFinal.putExtra("data",finalLogs);
-                                        reviewFinal.putExtra("fullName",fullName);
-                                        reviewFinal.putExtra("username",userName);
-                                        reviewFinal.putExtra("projectName",project);
-                                        reviewFinal.putExtra("projectID",projectName);
-                                        startActivity(reviewFinal);
+                                        if(proceed){
+                                            Intent reviewFinal = new Intent(ActivityActivity.this,FinalActivity.class);
+                                            for(int k=0;k<timeLogs.size();k++){
+                                                TImeLog temp = timeLogs.get(k);
+                                                if (temp.isChecked && !finalLogs.contains(temp)) {
+                                                    finalLogs.add(temp);
+                                                }
+                                            }
+                                            reviewFinal.putExtra("data",finalLogs);
+                                            reviewFinal.putExtra("fullName",fullName);
+                                            reviewFinal.putExtra("username",userName);
+                                            reviewFinal.putExtra("projectName",project);
+                                            reviewFinal.putExtra("projectID",projectName);
+                                            startActivity(reviewFinal);
+                                        }else{
+                                            showPopup("Please fill all data to proceed further");
+                                        }
+
                                     }
                                 });
 
@@ -128,6 +136,8 @@ ArrayList<TImeLog> finalLogs = new ArrayList<>();
         timeLogs.get(position).setChecked(isChecked);
     }
 
-
+    private void showPopup(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
 }

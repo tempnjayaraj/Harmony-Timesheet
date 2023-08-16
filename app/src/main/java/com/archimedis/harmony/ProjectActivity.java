@@ -1,10 +1,13 @@
 package com.archimedis.harmony;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,8 +19,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,7 +41,13 @@ public class ProjectActivity extends AppCompatActivity {
         Bundle fromPrevious = getIntent().getExtras();
         String userEmail = fromPrevious.getString("username");
         String fullName = fromPrevious.getString("fullName");
-
+        System.out.println("WELCOME");
+        LocalDateTime ldt = LocalDateTime.now();
+                        String date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
+                                .format(ldt);
+        JSONObject filterObj = new JSONObject();
+        filterObj.put("date",date);
+        filterObj.put("user",userEmail);
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -44,16 +56,18 @@ public class ProjectActivity extends AppCompatActivity {
                 .addFormDataPart("ignore_user_permissions", "0")
                 .addFormDataPart("reference_doctype", "Timesheet")
                 .addFormDataPart("query", "ecapsule_hrms.overrides.override_timesheet.project_query")
-                .addFormDataPart("filters", "{\"date\":\"2023-08-03\",\"user\":\"" + userEmail + "\"}")
+                .addFormDataPart("filters", filterObj.toJSONString())
                 .build();
         Request request = new Request.Builder()
                 .url("http://115.97.255.108/api/method/frappe.desk.search.search_link")
                 .method("POST", body)
                 .addHeader("Authorization", "token 3cc00f4eaf15af9:2f74e94e2f285ca")
                 .build();
+        System.out.println("GOING TO CALL");
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                System.out.println("FAILURE");
                 e.printStackTrace();
             }
 
@@ -62,7 +76,7 @@ public class ProjectActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     JSONParser parser = new JSONParser();
                     try {
-                        TextView username = findViewById(R.id.textView);
+                        TextView username = findViewById(R.id.header);
                         ListView listView = findViewById(R.id.listView);
                         int[] images = {R.drawable.p1};
                         List<String> descriptions = new ArrayList<>();
@@ -79,6 +93,7 @@ public class ProjectActivity extends AppCompatActivity {
                         ProjectActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("INSIDE RUN");
                                 ItemAdapter itemAdapter = new ItemAdapter(ProjectActivity.this, projectIDs, descriptions);
                                 listView.setAdapter(itemAdapter);
                                 username.setText("Welcome, "+fullName);
@@ -98,8 +113,22 @@ public class ProjectActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
+                }else{
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            TextView username = findViewById(R.id.header);
+                            username.setText("Hey "+fullName+", Chill out!!\nNo projects for today");
+                            username.setGravity(Gravity.CENTER);
+
+                        }
+                    });
+
                 }
             }
         });
     }
+
 }

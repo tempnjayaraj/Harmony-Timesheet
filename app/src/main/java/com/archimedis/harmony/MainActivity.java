@@ -53,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogFra
             }
         });
 
+        ImageView getTimeSheetbtn = findViewById(R.id.seeTimesheetBtn);
+        getTimeSheetbtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Load the RecyclerView layout
+                Intent loginPage = new Intent(MainActivity.this,GetTimesheetsActivity.class);
+                startActivity(loginPage);
+            }
+        });
     }
     private void showPopup(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

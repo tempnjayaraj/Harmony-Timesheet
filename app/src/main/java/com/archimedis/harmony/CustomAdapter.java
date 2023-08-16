@@ -117,7 +117,6 @@ public class CustomAdapter extends BaseAdapter {
 
         viewHolder.editTextAdditional2.setText(tImeLogs.get(position).getTime());
         viewHolder.editTextAdditional2.addTextChangedListener(new TextWatcher() {
-            private boolean isUserTyping = true;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -15,6 +15,7 @@ import okhttp3.Response;
 
 public class HarmonyUtil {
 
+
     public static String getUserName(String username, String password) throws IOException, ParseException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();

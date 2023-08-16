@@ -27,6 +27,8 @@
         <activity android:name=".ProjectActivity"></activity>
         <activity android:name=".ActivityActivity"></activity>
         <activity android:name=".FinalActivity"></activity>
+        <activity android:name=".SuccessActivity"></activity>
+        <activity android:name=".GetTimesheetsActivity"></activity>
     </application>
 
 </manifest>
